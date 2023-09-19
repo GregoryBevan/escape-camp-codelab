@@ -5,6 +5,7 @@ plugins {
 	id("io.spring.dependency-management") version "1.1.3"
 	kotlin("jvm") version "1.8.22"
 	kotlin("plugin.spring") version "1.8.22"
+	id("me.elgregos.reakteves.cli") version "1.2.5"
 }
 
 group = "me.elgregos"
@@ -19,6 +20,7 @@ repositories {
 }
 
 dependencies {
+	implementation("me.elgregos:reakt-eves:1.2.5")
 	implementation("org.springframework.boot:spring-boot-starter-data-r2dbc")
 	implementation("org.springframework.boot:spring-boot-starter-webflux")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
@@ -36,7 +38,7 @@ dependencies {
 	testImplementation("io.projectreactor:reactor-test")
 	testImplementation("org.testcontainers:junit-jupiter")
 	testImplementation("org.testcontainers:postgresql")
-	testImplementation("org.testcontainers:r2dbc")
+	testImplementation("org.testcontainers:r2dbc:1.17.6")
 }
 
 tasks.withType<KotlinCompile> {
