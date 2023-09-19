@@ -1,0 +1,16 @@
+services:
+  escape_camp_postgres:
+    image: postgres:16-alpine
+    container_name: escape_camp_postgres
+    restart: always
+    command: ["postgres", "-c", "log_min_duration_statement=1000", "-c", "log_destination=stderr"]
+    volumes:
+      - ./docker/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - escape-camp-data:/var/lib/posgresql/data
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: guess-what
+
+volumes:
+  escape-camp-data:

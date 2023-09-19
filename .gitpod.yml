@@ -1,0 +1,12 @@
+image:
+  file: .gitpod.Dockerfile
+
+tasks:
+   - name: Configure PostgreSQL container
+     command: docker compose up -d
+
+jetbrains:
+  intellij:
+    vmoptions: '-Xmx4g'
+    prebuilds:
+      version: stable
