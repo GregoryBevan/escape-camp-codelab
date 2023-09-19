@@ -15,9 +15,9 @@
   - **Name**: escape-camp
   - **Description** (optional): Escape camp codelab
   
-Other options should be kept as we're targeting the JRE **17** and we want to deploy the application as a **Jar**.
+Other options should be kept as is, we're targeting the JRE **17** and we want to deploy the application as a **Jar**.
 
-- The necessary dependencies to select are :
+- The mandatory dependencies are :
   - Spring Boot DevTools
   - Spring Reactive Web
   - Spring Data R2DBC
