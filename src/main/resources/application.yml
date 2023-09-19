@@ -1,1 +1,15 @@
-
+spring:
+  r2dbc:
+    url: r2dbc:postgresql://${POSTGRESQL_ADDON_HOST:localhost}:${POSTGRESQL_ADDON_PORT:5432}/${POSTGRESQL_ADDON_DB:escape-camp}
+    username: ${POSTGRESQL_ADDON_USER:admin}
+    password: ${POSTGRESQL_ADDON_PASSWORD:guess-what}
+    pool:
+      initialSize: 2
+      maxSize: 10
+    properties:
+      sslMode: ${POSTGRESQL_R2DBC_SSL_MODE:DISABLE}
+  liquibase:
+    change-log: classpath:db/changelog/db-changelog.sql
+    url: jdbc:postgresql://${POSTGRESQL_ADDON_HOST:localhost}:${POSTGRESQL_ADDON_PORT:5432}/${POSTGRESQL_ADDON_DB:escape-camp}
+    user: ${POSTGRESQL_ADDON_USER:admin}
+    password: ${POSTGRESQL_ADDON_PASSWORD:guess-what}
