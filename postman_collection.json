@@ -1,0 +1,888 @@
+{
+	"info": {
+		"_postman_id": "8fc33565-eab5-4452-bf1e-7d99df1180aa",
+		"name": "Escape Camp Code Lab",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "2435879",
+		"_collection_link": "https://winter-zodiac-928227.postman.co/workspace/Escape-Camp-Code-Lab~fb443bb2-1c08-4470-8a56-d9b00e1fb1e0/collection/2435879-8fc33565-eab5-4452-bf1e-7d99df1180aa?action=share&source=collection_link&creator=2435879"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"pm.collectionVariables.set(\"organizerAccessToken\", jsonData.accessToken);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"organizer\",\n    \"password\": \"7P2byKz39G!FGY\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/tokens",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"tokens"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create new game",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"pm.collectionVariables.set(\"gameId\", jsonData.gameId);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{organizerAccessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/games",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"games"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create game with unlimited contestant",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"pm.collectionVariables.set(\"gameId\", jsonData.gameId);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{organizerAccessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"enrollmentType\": \"UNLIMITED\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/games",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"games"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Game events",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{organizerAccessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/games/{{gameId}}/events-stream",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"games",
+						"{{gameId}}",
+						"events-stream"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Locked and Loaded team",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"pm.collectionVariables.set(\"lockedAndLoadedContestantId\", jsonData.contestantId);",
+							"pm.collectionVariables.set(\"lockedAndLoadedAccessToken\", jsonData.accessToken);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Locked and Loaded\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/games/{{gameId}}/contestants",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"games",
+						"{{gameId}}",
+						"contestants"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Jeepers Keypers team",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"pm.collectionVariables.set(\"jeepersKeypersContestantId\", jsonData.contestantId);",
+							"pm.collectionVariables.set(\"jeepersKeypersAccessToken\", jsonData.accessToken);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Jeepers Keypers\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/games/{{gameId}}/contestants",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"games",
+						"{{gameId}}",
+						"contestants"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Sher-Unlock team",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"pm.collectionVariables.set(\"sherUnlockContestantId\", jsonData.contestantId);",
+							"pm.collectionVariables.set(\"sherUnlockAccessToken\", jsonData.accessToken);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Sher-Unlock\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/games/{{gameId}}/contestants",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"games",
+						"{{gameId}}",
+						"contestants"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add The Escape Peas team Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"pm.collectionVariables.set(\"theEscapePeasContestantId\", jsonData.contestantId);",
+							"pm.collectionVariables.set(\"theEscapePeasAccessToken\", jsonData.accessToken);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"The Escape Peas\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/games/{{gameId}}/contestants",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"games",
+						"{{gameId}}",
+						"contestants"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Unlock game next riddle",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{organizerAccessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/games/{{gameId}}/riddles/next",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"games",
+						"{{gameId}}",
+						"riddles",
+						"next"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Jeepers Keypers next riddle",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"pm.collectionVariables.set(\"jeepersKeypersCurrentRiddleName\", jsonData.riddle.name);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jeepersKeypersAccessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/games/{{gameId}}/contestants/{{jeepersKeypersContestantId}}/riddle",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"games",
+						"{{gameId}}",
+						"contestants",
+						"{{jeepersKeypersContestantId}}",
+						"riddle"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get The Escape Peas next riddle",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"pm.collectionVariables.set(\"theEscapePeasCurrentRiddleName\", jsonData.riddle.name);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jeepersKeypersAccessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/games/{{gameId}}/contestants/{{theEscapePeasContestantId}}/riddle",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"games",
+						"{{gameId}}",
+						"contestants",
+						"{{theEscapePeasContestantId}}",
+						"riddle"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Locked and Loaded next riddle",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"pm.collectionVariables.set(\"lockedAndLoadedCurrentRiddleName\", jsonData.riddle.name);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{lockedAndLoadedAccessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/games/{{gameId}}/contestants/{{lockedAndLoadedContestantId}}/riddle",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"games",
+						"{{gameId}}",
+						"contestants",
+						"{{lockedAndLoadedContestantId}}",
+						"riddle"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Sher-Unlock next riddle",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"pm.collectionVariables.set(\"sherUnlockCurrentRiddleName\", jsonData.riddle.name);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{sherUnlockAccessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/games/{{gameId}}/contestants/{{sherUnlockContestantId}}/riddle",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"games",
+						"{{gameId}}",
+						"contestants",
+						"{{sherUnlockContestantId}}",
+						"riddle"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Submit Locked and Loaded first riddle solution",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{lockedAndLoadedAccessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"solution\": \"event sourcing\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/games/{{gameId}}/contestants/{{lockedAndLoadedContestantId}}/riddle/{{lockedAndLoadedCurrentRiddleName}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"games",
+						"{{gameId}}",
+						"contestants",
+						"{{lockedAndLoadedContestantId}}",
+						"riddle",
+						"{{lockedAndLoadedCurrentRiddleName}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Submit SherUnlock first riddle solution Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{theEscapePeasAccessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"solution\": \"solution-4\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/games/{{gameId}}/contestants/{{sherUnlockContestantId}}/riddle/{{sherUnlockCurrentRiddleName}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"games",
+						"{{gameId}}",
+						"contestants",
+						"{{sherUnlockContestantId}}",
+						"riddle",
+						"{{sherUnlockCurrentRiddleName}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Jeepers Keypers Game events",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{organizerAccessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/games/{{gameId}}/events-stream",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"games",
+						"{{gameId}}",
+						"events-stream"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List games",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{organizerAccessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/games",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"games"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Game",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{organizerAccessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/games/{{gameId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"games",
+						"{{gameId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Game leaderboard",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{organizerAccessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/games/{{gameId}}/leaderboard",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"games",
+						"{{gameId}}",
+						"leaderboard"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "organizerAccessToken",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "gameId",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "lockedAndLoadedAccessToken",
+			"value": "",
+			"type": "any"
+		},
+		{
+			"key": "lockedAndLoadedContestantId",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "lockedAndLoadedRiddleName",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "jeepersKeypersAccessToken",
+			"value": "",
+			"type": "any"
+		},
+		{
+			"key": "jeepersKeypersContestantId",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "jeepersKeypersCurrentRiddleName",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "theEscapePeasAccessToken",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "theEscapePeasContestantId",
+			"value": "",
+			"type": "any"
+		},
+		{
+			"key": "theEscapePeasCurrentRiddleName",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "sherUnlockAccessToken",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "sherUnlockContestantId",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "sherUnlockCurrentRiddleName",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "lockedAndLoadedCurrentRiddleName",
+			"value": ""
+		},
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080",
+			"type": "string"
+		}
+	]
+}
