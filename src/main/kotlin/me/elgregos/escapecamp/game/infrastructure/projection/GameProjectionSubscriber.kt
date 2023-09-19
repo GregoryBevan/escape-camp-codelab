@@ -34,6 +34,7 @@ class GameProjectionSubscriber(
             .flatMap {
                 when (it) {
                     is GameCreated -> createGame(it)
+                    is ContestantEnrolled -> updateGame(it)
                 }
             }
             .doOnError { error -> logger.error(error) { "An error occurred while processing event" } }
@@ -42,4 +43,8 @@ class GameProjectionSubscriber(
 
     private fun createGame(event: GameCreated) =
         gameProjectionStore.insert(fromJson(event.event))
+
+    private fun updateGame(event: GameEvent) =
+        gameProjectionStore.find(event.aggregateId)
+            .flatMap { gameProjectionStore.update(mergeJsonPatch(it, event)) }
 }

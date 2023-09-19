@@ -17,6 +17,7 @@ class GameCommandHandler(
     fun handle(gameCommand: GameCommand) =
         when (gameCommand) {
             is CreateGame -> createGame(gameCommand)
+            is EnrollContestant -> enrollContestant(gameCommand)
         }
             .flatMap { gameEventStore.save(it) }
             .doOnNext { gameEventPublisher.publish(it) }
@@ -24,5 +25,9 @@ class GameCommandHandler(
     private fun createGame(gameCommand: CreateGame) =
         GameAggregate(gameCommand.gameId, gameCommand.createdBy, gameEventStore)
             .createGame(gameCommand.createdAt)
+
+    private fun enrollContestant(gameCommand: EnrollContestant) =
+        GameAggregate(gameCommand.gameId, gameCommand.enrolledBy, gameEventStore)
+            .enrollContestant(gameCommand.contestant, gameCommand.enrolledAt)
 
 }

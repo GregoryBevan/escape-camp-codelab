@@ -1,4 +1,4 @@
---liquibase formatted sql        
+--liquibase formatted sql
 -- Game event log
 
 -- changeset me.elgregos:create-game-event-sequence
