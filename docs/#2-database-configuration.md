@@ -1,7 +1,7 @@
 ## Configuration of PostgreSQL database
 
 ### Local Docker container creation
-To start easily a database on your computer, we use Docker.
+To easily set up a database on your computer, we're going to use Docker.
 - First create a _docker-compose.yml_ file
 - Copy the following content to it
 ```dockerfile
@@ -22,7 +22,7 @@ services:
 volumes:
   escape-camp-data:
 ```
-- To be able to initialize the database, create the file _init.sql_
+- To initialize the database, create the file _init.sql_, it will be played on container startup
 - Copy the following content to this file
 ```postgresql
 create role admin with password 'guess-what' superuser createdb createrole inherit login;
@@ -33,6 +33,12 @@ create database "escape-camp" owner admin;
 ```shell
 docker compose up -d
 ```
+This will start the container and you can check everything is running smoothly :
+```shell
+docker ps
+```
+![docker-ps.png](%232%2Fdocker-ps.png)
+
 
 ### Application configuration
 - Rename _application.properties_ to _application.yml_
@@ -68,4 +74,3 @@ You can now start the application from IntelliJ :
 ![start-application.png](%232%2Fstart-application.png)
 
 Next
-
