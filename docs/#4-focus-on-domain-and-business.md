@@ -290,17 +290,17 @@ fun enrollContestant(contestant: Contestant, enrolledAt: LocalDateTime): Flux<Ga
 Congratulations, you've implemented your first business function in the `GameAggregate` 🎉!
 
 ### Add command for contestant enrollment
-Now that the application is able to produce `ContestantEnrolled` events, we need to trigger this by an action, also called Command in the Event Sourcing pattern.
+Now that the application is able to produce `ContestantEnrolled` events, we need to trigger this by an action, also called **Command** in the Event Sourcing pattern.
 A command is an infinitive verb representing the action.
 
 To create the `EnrollContestant` command
 - **Open the `GameCommand` sealed class in the package `me.elgregos.escapecamp.game.application`**
 - **Add an `EnrollContestant` data class that extends `GameCommand`**
-- **Add `gameId` field with type `UUID` and a random UUID as default value**
-- **Add `enrolledBy`field with type `UUID`**
-- **Add `enrolledAt` field with type `LocalDateTime` and initialized with `nowUTC()`**
-- **Add `name` field with type `String`**
-- **Add `contestant` field with type `Contestant` and initialize with a new instance**
+- **Add a `gameId` field with type `UUID` and a random UUID as default value**
+- **Add an `enrolledBy`field with type `UUID`**
+- **Add an `enrolledAt` field with type `LocalDateTime` and initialize it with `nowUTC()`**
+- **Add a `name` field with type `String`**
+- **Add a `contestant` field with type `Contestant` and initialize it with a new instance**
 ```kotlin
     data class EnrollContestant(
         override val gameId: UUID,
