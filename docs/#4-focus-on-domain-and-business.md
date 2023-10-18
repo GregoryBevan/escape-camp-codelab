@@ -4,7 +4,7 @@ Now we can start to add objects and enrich the domain and business logic to repr
 ## Review the game creation
 A game should contain the riddle names and their solutions. The following steps will add this concept to the generated code.
 
-### Add `riddleSolutions` field to `Game` entity
+### Add a `riddleSolutions` field to the `Game` entity
 - **Open the `Game` data class in package `me.elgregos.escapecamp.game.domain.entity`**
 - **Add the `riddleSolutions` field with type `List<Pair<String, String>>`**
 ```kotlin
@@ -17,13 +17,11 @@ data class Game(
     override val updatedBy: UUID = createdBy,
     val riddleSolutions: List<Pair<String, String>>,
 val riddles: List<Pair<String, String>>,
-) : DomainEntity<UUID, UUID> {
-
-}
+) : DomainEntity<UUID, UUID> {}
 ```
-Each pair in the list is the riddle name and its solution
+Each pair in this list is the riddle name and its solution
 
-### Add `riddleSolutions` parameter to `GameCreated` event
+### Add a `riddleSolutions` parameter to the `GameCreated` event
 - **Open the `GameEvent` data class in package `me.elgregos.escapecamp.game.domain.event`**
 - **Add the `riddleSolutions` parameter to secondary constructor with type `List<Pair<String, String>>`**
 - **Add a `riddleSolutions` properties to the Json event**
@@ -54,7 +52,7 @@ val riddleSolutions: List<Pair<String, String>> = listOf(
     "riddle-4" to "solution-4"
 )
 ```
-- **In the `createGame` method, pass the riddleSolutions variable using the secondary `GameCreated` constructor**
+- **In the `createGame` method, pass the riddleSolutions variable using a secondary `GameCreated` constructor**
 ```kotlin
 fun createGame(riddleSolutions: List<Pair<String, String>>, createdAt: LocalDateTime): Flux<GameEvent> =
     Flux.just(GameCreated(gameId, userId, createdAt, riddleSolutions))
@@ -109,13 +107,13 @@ The response should contain the description of the game and be like:
     ]
 }
 ```
-In the final version, we obviously have secured this endpoint to avoid the contestant to see the solutions ;)
+In the final version, we obviously will have secured this endpoint to avoid the contestant to see the solutions ;)
  
 
 ## The contestant enrollment feature
 You're now going to implement the feature to enroll a new contestant, from the domain to the endpoint in the controller.
 
-### Add Riddle data class
+### Create a Riddle data class
 Data class concept in Kotlin is the best way to define simple objects, what we used to call Pojo in Java.
 To create the Riddle data class :
 
@@ -126,8 +124,8 @@ To create the Riddle data class :
 
 ![riddle-data-classe-creation.png](%234/riddle-data-classe-creation.png)
 
-- **Add `name` field with type `String` field**
-- **Add`assignedAt` and `solvedAt` fields with type `LocalDateTime`**
+- **Add a `name` field with type `String` field**
+- **Add a `assignedAt` and `solvedAt` fields with type `LocalDateTime`**
 
 Your _Riddle.kt_ file should contain: 
 ```kotlin
@@ -142,7 +140,7 @@ data class Riddle(
 )
 ```
 
-### Add Contestant data class
+### Create a Contestant data class
 Following the previous steps, you need to
 - **Create a `Contestant` data class in the package _me.elgregos.escapecamp.game.domain.entity_**
 - **Add `id` field with type `UUID`**
@@ -163,7 +161,7 @@ data class Contestant(
 
 ### Enroll contestants to the game
 - **Open the `Game` entity**
-- **Add `contestants` field of type `List<Contestant>**
+- **Add a `contestants` field of type `List<Contestant>**
 - **Initialize the `contestants` as an empty list**
 ```kotlin
 data class Game(
@@ -174,11 +172,12 @@ data class Game(
     override val updatedAt: LocalDateTime = createdAt,
     override val updatedBy: UUID = createdBy,
     val riddles: List<Pair<String, String>>,
-    val contestants: List<Contestant> = listOf()) {}
+    val contestants: List<Contestant> = listOf()
+) {}
 ```
 - **Create an `enrollContestant()` function to the `Game` data class**
-- **Add `contestant` parameter with type `Contestant`**
-- **Add `enrolledAt` parameter with type `LocalDateTime`**
+- **Add a `contestant` parameter with type `Contestant`**
+- **Add a `enrolledAt` parameter with type `LocalDateTime`**
 - **Use the `copy()` function of the data class to create an updated instance of the `Game`**
 ```kotlin
  fun enrollContestant(contestant: Contestant, enrolledAt: LocalDateTime) =
@@ -189,10 +188,10 @@ data class Game(
             contestants = contestants.toMutableList().also { it.add(contestant) }
         )
 ```
-You have implemented the logic to enroll a contestant to a Game.
+You now have implemented the logic to enroll a contestant to a Game 🙂.
 
 ### Create ContestantEnrolled event
-Next step will be to create a new event based on GameCreated event
+The next step will be to create a new event based on the generated GameCreated event
 - **Open the `GameEvent` sealed class in the package `me.elgregos.escapecamp.game.domain.event`**
 - **Create the `ContestEnrolled` data class which extends `GameEvent`**
 ```kotlin
@@ -228,11 +227,11 @@ constructor(gameId: UUID, version: Int, enrolledBy: UUID, enrolledAt: LocalDateT
         .put("updatedAt", "$enrolledAt")
         .set("contestants", genericObjectMapper.valueToTree(contestants)))
 ```
-Note that the event contains only the fields that we create or update. You'll understand soon why.
+Note that the event contains only the fields that we create or update. You'll understand soon why 😉.
 
 ### Correct the compilation error in `GameProjectionSubscriber`
 If you try to build the project now, you should notice a compilation error in the `GameProjectionSubscriber` class.
-This is due to the missing branch in the `when` statement.
+This is due to the missing branch in the `when` statement (in Kotlin `when` matching are always exhaustive).
 To correct this
 - **Open the `GameProjectionSubscriber` class in package `me.elgregos.escapecamp.game.infrastructure.projection`**
 - **Create an `updateGame()` function**
@@ -241,7 +240,7 @@ private fun updateGame(event: GameEvent) =
     gameProjectionStore.find(event.aggregateId)
         .flatMap { gameProjectionStore.update(mergeJsonPatch(it, event)) }
 ```
-Here we use the `mergeJsonPatch()` generic function based on [Json Merge Patch](https://github.com/java-json-tools/json-patch/tree/master#json-merge-patch) which is designed to merge to Json documents.
+Here we use the `mergeJsonPatch()` generic function based on [Json Merge Patch](https://github.com/java-json-tools/json-patch/tree/master#json-merge-patch) which is designed to merge Json documents.
 - **Add the `ContestantEnrolled` branch that call this function**
 ```kotlin
 when (it) {
@@ -251,23 +250,23 @@ when (it) {
 ```
 
 ### Implement the business logic of contestant enrollment in `GameAggregate`
-The  `GameAggregate` should now be completed to generate the `ContestantEnrollment` event.
+The `GameAggregate` should now be completed to generate the `ContestantEnrollment` event.
 - **Open the `GameAggregate` class in the package `me.elgregos.escapecamp.game.domain.event`**
 - **Add an `enrollmentContest` function that takes two parameters** 
   - **contestant: Contestant**
   - **enrolledAt: LocalDateTime**
-- **The function should return a `Flux`of `GameEvent`**
+- **The function should return a `Flux` of `GameEvent`**
 ```kotlin
 fun enrollContestant(contestant: Contestant, enrolledAt: LocalDateTime): Flux<GameEvent> =
 ```
 - **Use the `previousState()` function to retrieve the reconstituted state from events stored in the database**
-- **Map the `JsonNode` result to a `Game` object
+- **Map the `JsonNode` result to a `Game` object**
 ```kotlin
 fun enrollContestant(contestant: Contestant, enrolledAt: LocalDateTime): Flux<GameEvent> =
   previousState()
     .map { JsonConvertible.fromJson<Game>(it) }
 ```
-- **Enroll the contestant to the game using the previously coded function in `Game` data class**
+- **Enroll the contestant to the game using the previously coded function in your `Game` data class**
 ```kotlin
 fun enrollContestant(contestant: Contestant, enrolledAt: LocalDateTime): Flux<GameEvent> =
   previousState()
@@ -288,7 +287,7 @@ fun enrollContestant(contestant: Contestant, enrolledAt: LocalDateTime): Flux<Ga
             }
         }
 ```
-Congratulations, you've implemented your first business function in the `GameAggregate`
+Congratulations, you've implemented your first business function in the `GameAggregate` 🎉!
 
 ### Add command for contestant enrollment
 Now that the application is able to produce `ContestantEnrolled` events, we need to trigger this by an action, also called Command in the Event Sourcing pattern.
