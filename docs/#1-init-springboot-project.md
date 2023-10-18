@@ -6,7 +6,7 @@
 - Select the following options :
   - **Project**:  _Gradle - Kotlin_
   - **Language**:  _Kotlin_
-  - **Spring Boot**: _3.1.3_
+  - **Spring Boot**: _3.1.4_
 
 
 - For Project Metadata, fill the form with :
